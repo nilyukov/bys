@@ -4,29 +4,34 @@
         integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" crossorigin="anonymous"></script>
 <script>
     $(function () {
-        $("#firstList, #secondList").sortable({
-            connectWith: "ul",
+
+        getLists();
+
+        $("#list0, #list1").sortable({
+            connectWith: ".connectedSortable",
             placeholder: "placeholder",
             delay: 150,
-            create: function (event, ui ) {
+            create: function (event, ui) {
                 addDataAttr();
+
+
             },
             update: function (event, ui) {
 
                 addDataAttr();
-
                 saveList();
+
             },
-            receive: function(event, ui) {
+            receive: function (event, ui) {
+
                 console.log('receive');
                 addDataAttr();
 
-
-                var pos = $(ui.item[0].outerHTML).data('position');
-                var idItem = $(ui.item[0].outerHTML).data('index');
-
+                let pos = $(ui.item[0].outerHTML).data('position');
+                let idItem = $(ui.item[0].outerHTML).data('index');
 
                 addItemToList(ui.sender[0].id, ui.item[0].innerHTML, idItem, pos);
+
 
             }
         }).disableSelection();
@@ -34,21 +39,56 @@
 
     });
 
+    function getLists() {
+
+        let countList = $('.connectedSortable').length;
+
+        for (let i = 0; i < countList; i++) {
+            $.ajax({
+                url: '/getList/' + i,
+                method: 'POST',
+                success: function (data) {
+                    [data] = JSON.parse(data);
+                    let countItems = Object.keys(data).length;
+
+                    if (countItems !== 0) {
+
+                        for (let j = 0; j < countItems; j++) {
+                            let item = data[j];
+
+                            $('#list' + i).append("<li class='facet' data-index='" + item.id + "' data-position='" + item.position + "'>" + item.title + "</li>")
+                        }
+
+                    }
+
+                },
+
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+    }
+
     function addDataAttr() {
+
         $(this).children().each(function (index) {
-            if ($(this).attr('data-position') != (index+1)) {
-                $(this).attr('data-position', (index+1)).addClass('updated');
+
+            if ($(this).attr('data-position') != (index + 1)) {
+
+                $(this).attr('data-position', (index + 1)).addClass('updated');
             }
         });
     }
 
+
     function saveList() {
-        var positions = [];
+
+        let positions = [];
         $('.updated').each(function () {
             positions.push([$(this).attr('data-index'), $(this).attr('data-position')]);
             $(this).removeClass('updated');
         });
-
 
 
         $.ajax({
@@ -59,7 +99,7 @@
                 update: 1,
                 positions: positions
             },
-            success: function () {
+            success: function (response) {
                 console.log('ok')
             },
             error: function (error) {
@@ -69,7 +109,6 @@
     }
 
     function addItemToList(idList, title, id, pos) {
-
 
         $.ajax({
             url: '/add',

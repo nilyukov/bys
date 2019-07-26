@@ -6,7 +6,6 @@ class SiteController {
 
     public function actionIndex(){
 
-
         if(isset($_POST['update']) && !empty($_POST['update'])){
             $update = $_POST['update'];
             $positions = $_POST['positions'];
@@ -19,9 +18,6 @@ class SiteController {
                 SecondList::updatePositions($index, $newPosition);
             }
         }
-
-        $itemsFromFirst = FirstList::getItems();
-        $itemsFromSecond = SecondList::getItems();
 
         require_once(ROOT . '/views/site/index.php');
 
@@ -60,4 +56,30 @@ class SiteController {
         header("Location: /");
         return true;
     }
+
+    public function actionGetList($id){
+
+
+
+        $items = '';
+
+        switch ($id){
+            case 0:
+                $items = FirstList::getItems();;
+                break;
+            case 1:
+                $items = SecondList::getItems();
+                break;
+        }
+
+        $data = [
+            (object)$items
+        ];
+
+        $data = json_encode($data);
+
+        echo $data;
+    }
+
+
 }

@@ -7,10 +7,7 @@
     <div class="row">
         <div class="col-3 offset-2">
             <label>First List</label>
-            <ul id="firstList" class="facet-list">
-                <?php foreach($itemsFromFirst  as $item): ?>
-                    <li class="facet" data-index="<?= $item['id']; ?>" data-position="<?= $item['position']; ?>"><?= $item['title']; ?></li>
-                <?php endforeach;?>
+            <ul id="list0" class="facet-list connectedSortable">
             </ul>
             <form method="post" action="add">
                 <div class="input-group mt-3">
@@ -24,10 +21,7 @@
         </div>
         <div class="col-3 offset-1">
             <label>Second List</label>
-            <ul id="secondList" class="facet-list">
-                <?php foreach($itemsFromSecond  as $item): ?>
-                    <li class="facet" data-index="<?= $item['id']; ?>" data-position="<?= $item['position']; ?>"><?= $item['title']; ?></li>
-                <?php endforeach;?>
+            <ul id="list1" class="facet-list connectedSortable">
             </ul>
             <form method="post" action="add">
                 <div class="input-group mt-3">
