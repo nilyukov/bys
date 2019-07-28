@@ -18,7 +18,7 @@ class SecondList {
         return $items;
     }
 
-    public static function addItemToList($title, $position){
+    public static function addItemToList($title, $position = 0){
         $db = Database::getConnection();
 
         $sql = 'INSERT INTO secondList '
