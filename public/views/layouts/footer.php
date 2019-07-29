@@ -37,7 +37,7 @@
             });
         };
 
-        const saveList = () => {
+        const saveList = (idList) => {
 
             let positions = [];
 
@@ -48,12 +48,19 @@
 
 
             $.ajax({
-                url: '/update',
+                url: '/',
                 method: 'POST',
                 dataType: 'text',
                 data: {
                     update: 1,
-                    positions: positions
+                    positions: positions,
+                    idList: idList
+                },
+                success: function () {
+                    console.log('update')
+                },
+                error: function (error) {
+                    console.log(error);
                 }
             })
         };
@@ -78,7 +85,7 @@
                     console.log(error);
                 }
             })
-        }
+        };
 
         getLists();
 
@@ -86,17 +93,16 @@
             connectWith: ".connectedSortable",
             placeholder: "placeholder",
             delay: 150,
-
             update: function (event, ui) {
+                let idList = $(ui.item[0]).parent().attr('id');
                 let element = $(this);
                 addDataAttr(element);
 
-                saveList();
-
+                saveList(idList);
             },
             receive: function (event, ui) {
                 let element = $(this);
-                addDataAttr();
+                addDataAttr(element);
 
                 let pos = $(ui.item[0].outerHTML).data('position');
                 let idItem = $(ui.item[0].outerHTML).data('index');

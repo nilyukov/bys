@@ -5,6 +5,33 @@
 class SiteController {
 
     public function actionIndex(){
+
+        if(isset($_POST['update']) && !empty($_POST['update'])){
+            $update = $_POST['update'];
+            $positions = $_POST['positions'];
+            $idList = $_POST['idList'];
+
+
+            if($idList === 'list0'){
+                foreach ($positions as $position) {
+                    $index = $position[0];
+                    $newPosition = $position[1];
+
+                    FirstList::updatePositions($index, $newPosition);
+
+                }
+            } else if($idList === 'list1') {
+                foreach ($positions as $position) {
+                    $index = $position[0];
+                    $newPosition = $position[1];
+
+                    SecondList::updatePositions($index, $newPosition);
+                }
+            }
+
+
+        }
+
         require_once(ROOT . '/views/site/index.php');
         return true;
     }
@@ -44,21 +71,21 @@ class SiteController {
 
     public function actionUpdate(){
 
-        if(isset($_POST['update']) && !empty($_POST['update'])){
-            $update = $_POST['update'];
-            $positions = $_POST['positions'];
+//        if(isset($_POST['update']) && !empty($_POST['update'])){
+//            $update = $_POST['update'];
+//            $positions = $_POST['positions'];
+//
+//
+//            foreach ($positions as $position) {
+//                $index = $position[0];
+//                $newPosition = $position[1];
+//
+//                FirstList::updatePositions($index, $newPosition);
+//                SecondList::updatePositions($index, $newPosition);
+//            }
+//        }
 
 
-            foreach ($positions as $position) {
-                $index = $position[0];
-                $newPosition = $position[1];
-
-                FirstList::updatePositions($index, $newPosition);
-                SecondList::updatePositions($index, $newPosition);
-            }
-        }
-
-        header("Location: /");
     }
 
     public function actionGetList($id){
