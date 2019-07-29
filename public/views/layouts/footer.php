@@ -48,7 +48,7 @@
 
 
             $.ajax({
-                url: '/',
+                url: '/update',
                 method: 'POST',
                 dataType: 'text',
                 data: {
